@@ -42,7 +42,6 @@ sub new {
 sub process {
 	my ($self, $content) = @_;
 
-	# Main stars.
 	$self->{'tags'}->put(
 		['b', 'pre'],
 		['d', $content],
