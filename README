@@ -75,12 +75,12 @@ METHODS
 
 ERRORS
      new():
-             From Class::Utils::set_params():
+             From Tags::HTML::new():
+                     Parameter 'css' must be a 'CSS::Struct::Output::*' class.
+                     Parameter 'tags' must be a 'Tags::Output::*' class.
                      Unknown parameter '%s'.
-             Parameter 'css' must be a 'CSS::Struct::Output::*' class.
-             Parameter 'tags' must be a 'Tags::Output::*' class.
 
-EXAMPLE1
+EXAMPLE
      use strict;
      use warnings;
 
@@ -90,84 +90,31 @@ EXAMPLE1
 
      # Object.
      my $css = CSS::Struct::Output::Indent->new;
-     my $tags = Tags::Output::Indent->new;
+     my $tags = Tags::Output::Indent->new(
+             'preserved' => 'pre',
+     );
      my $obj = Tags::HTML::Pre->new(
              'css' => $css,
              'tags' => $tags,
      );
 
      # Process indicator.
-     $obj->process_css;
-     $obj->process(50);
+     $obj->process(<<'END');
+     foo
+       bar
+         baz
+     END
 
      # Print out.
-     print "CSS\n";
-     print $css->flush."\n";
      print "HTML\n";
      print $tags->flush."\n";
 
      # Output:
-     # CSS
-     # .gradient {
-     #         height: 30px;
-     #         width: 500px;
-     #         background-color: red;
-     #         background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-     # }
      # HTML
-     # <div style="width: 250px;overflow: hidden;">
-     #   <div class="gradient">
-     #   </div>
-     # </div>
-
-EXAMPLE2
-     use strict;
-     use warnings;
-
-     use CSS::Struct::Output::Indent;
-     use Tags::HTML::Pre;
-     use Tags::Output::Indent;
-
-     if (@ARGV < 1) {
-             print STDERR "Usage: $0 percent\n";
-             exit 1;
-     }
-     my $percent = $ARGV[0];
-
-     # Object.
-     my $css = CSS::Struct::Output::Indent->new;
-     my $tags = Tags::Output::Indent->new;
-     my $obj = Tags::HTML::Pre->new(
-             'css' => $css,
-             'tags' => $tags,
-     );
-
-     # Process indicator.
-     $obj->process_css;
-     $obj->process($percent);
-
-     # Print out.
-     print "CSS\n";
-     print $css->flush."\n";
-     print "HTML\n";
-     print $tags->flush."\n";
-
-     # Output for 30:
-     # CSS
-     # .gradient {
-     #         height: 30px;
-     #         width: 500px;
-     #         background-color: red;
-     #         background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-     # }
-     # HTML
-     # <div style="width: 150px;overflow: hidden;">
-     #   <div class="gradient">
-     #   </div>
-     # </div>
+     # TODO
 
 DEPENDENCIES
-    Class::Utils, Error::Pure.
+    Tags::HTML.
 
 SEE ALSO
     Tags::HTML::Stars

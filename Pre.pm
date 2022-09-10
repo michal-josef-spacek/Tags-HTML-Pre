@@ -1,10 +1,8 @@
 package Tags::HTML::Pre;
 
+use base qw(Tags::HTML);
 use strict;
 use warnings;
-
-use Class::Utils qw(set_params);
-use Error::Pure qw(err);
 
 our $VERSION = 0.01;
 
@@ -12,34 +10,16 @@ our $VERSION = 0.01;
 sub new {
 	my ($class, @params) = @_;
 
-	# Create object.
-	my $self = bless {}, $class;
+	# No CSS support.
+	push @params, 'no_css', 1;
 
-	# 'CSS::Struct::Output' object.
-	$self->{'css'} = undef;
-
-	# 'Tags::Output' object.
-	$self->{'tags'} = undef;
-
-	# Process params.
-	set_params($self, @params);
-
-	# Check to 'CSS::Struct::Output' object.
-	if ($self->{'css'} && ! $self->{'css'}->isa('CSS::Struct::Output')) {
-		err "Parameter 'css' must be a 'CSS::Struct::Output::*' class.";
-	}
-
-	# Check to 'Tags' object.
-	if (! $self->{'tags'} || ! $self->{'tags'}->isa('Tags::Output')) {
-		err "Parameter 'tags' must be a 'Tags::Output::*' class.";
-	}
+	my $self = $class->SUPER::new(@params);
 
 	# Object.
 	return $self;
 }
 
-# Process 'Tags'.
-sub process {
+sub _process {
 	my ($self, $content) = @_;
 
 	$self->{'tags'}->put(
@@ -146,12 +126,12 @@ Returns undef.
 =head1 ERRORS
 
  new():
-         From Class::Utils::set_params():
+         From Tags::HTML::new():
+                 Parameter 'css' must be a 'CSS::Struct::Output::*' class.
+                 Parameter 'tags' must be a 'Tags::Output::*' class.
                  Unknown parameter '%s'.
-         Parameter 'css' must be a 'CSS::Struct::Output::*' class.
-         Parameter 'tags' must be a 'Tags::Output::*' class.
 
-=head1 EXAMPLE1
+=head1 EXAMPLE
 
  use strict;
  use warnings;
@@ -162,87 +142,32 @@ Returns undef.
 
  # Object.
  my $css = CSS::Struct::Output::Indent->new;
- my $tags = Tags::Output::Indent->new;
+ my $tags = Tags::Output::Indent->new(
+         'preserved' => 'pre',
+ );
  my $obj = Tags::HTML::Pre->new(
          'css' => $css,
          'tags' => $tags,
  );
 
  # Process indicator.
- $obj->process_css;
- $obj->process(50);
+ $obj->process(<<'END');
+ foo
+   bar
+     baz
+ END
 
  # Print out.
- print "CSS\n";
- print $css->flush."\n";
  print "HTML\n";
  print $tags->flush."\n";
 
  # Output:
- # CSS
- # .gradient {
- #         height: 30px;
- #         width: 500px;
- #         background-color: red;
- #         background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
- # }
  # HTML
- # <div style="width: 250px;overflow: hidden;">
- #   <div class="gradient">
- #   </div>
- # </div>
-
-=head1 EXAMPLE2
-
- use strict;
- use warnings;
-
- use CSS::Struct::Output::Indent;
- use Tags::HTML::Pre;
- use Tags::Output::Indent;
-
- if (@ARGV < 1) {
-         print STDERR "Usage: $0 percent\n";
-         exit 1;
- }
- my $percent = $ARGV[0];
-
- # Object.
- my $css = CSS::Struct::Output::Indent->new;
- my $tags = Tags::Output::Indent->new;
- my $obj = Tags::HTML::Pre->new(
-         'css' => $css,
-         'tags' => $tags,
- );
-
- # Process indicator.
- $obj->process_css;
- $obj->process($percent);
-
- # Print out.
- print "CSS\n";
- print $css->flush."\n";
- print "HTML\n";
- print $tags->flush."\n";
-
- # Output for 30:
- # CSS
- # .gradient {
- #         height: 30px;
- #         width: 500px;
- #         background-color: red;
- #         background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
- # }
- # HTML
- # <div style="width: 150px;overflow: hidden;">
- #   <div class="gradient">
- #   </div>
- # </div>
+ # TODO
 
 =head1 DEPENDENCIES
 
-L<Class::Utils>,
-L<Error::Pure>.
+L<Tags::HTML>.
 
 =head1 SEE ALSO
 
