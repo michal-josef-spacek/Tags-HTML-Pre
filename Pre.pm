@@ -41,7 +41,7 @@ __END__
 
 =head1 NAME
 
-Tags::HTML::Pre - Tags helper for gradient evaluation.
+Tags::HTML::Pre - Tags helper for preserved content.
 
 =head1 SYNOPSIS
 
@@ -69,36 +69,6 @@ It's required.
 
 Default value is undef.
 
-=item * C<css_background_image>
-
-CSS parameter for background-image of gradient.
-
-Default value is 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)'.
-
-=item * C<css_gradient_class>
-
-CSS class name for gradient.
-
-Default value is 'gradient'.
-
-=item * C<height>
-
-Indicator height.
-
-Default value is 30.
-
-=item * C<unit>
-
-Unit for height and width.
-
-Default value is 'px'.
-
-=item * C<width>
-
-Indicator width.
-
-Default value is 500.
-
 =item * C<tags>
 
 'Tags::Output' object.
@@ -111,7 +81,7 @@ Default value is undef.
 
  $obj->process($content);
 
-Process Tags structure for gradient.
+Process Tags structure for preserved content defined in C<$content>.
 
 Returns undef.
 
