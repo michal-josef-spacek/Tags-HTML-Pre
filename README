@@ -5,7 +5,7 @@ SYNOPSIS
      use Tags::HTML::Pre;
 
      my $obj = Tags::HTML::Pre->new(%params);
-     $obj->process($stars_hr);
+     $obj->process($content);
      $obj->process_css;
 
 METHODS
@@ -60,7 +60,7 @@ METHODS
             Default value is undef.
 
   "process"
-     $obj->process($percent_value);
+     $obj->process($content);
 
     Process Tags structure for gradient.
 

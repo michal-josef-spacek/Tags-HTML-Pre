@@ -48,7 +48,7 @@ Tags::HTML::Pre - Tags helper for gradient evaluation.
  use Tags::HTML::Pre;
 
  my $obj = Tags::HTML::Pre->new(%params);
- $obj->process($stars_hr);
+ $obj->process($content);
  $obj->process_css;
 
 =head1 METHODS
@@ -109,7 +109,7 @@ Default value is undef.
 
 =head2 C<process>
 
- $obj->process($percent_value);
+ $obj->process($content);
 
 Process Tags structure for gradient.
 
